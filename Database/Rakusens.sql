@@ -1,0 +1,206 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost
+-- Generation Time: Feb 25, 2024 at 01:06 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `Rakusens`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Ingredients`
+--
+
+CREATE TABLE `Ingredients` (
+  `Ingredient_ID` int(11) NOT NULL,
+  `SKU_ID` int(11) NOT NULL,
+  `IngredientName` varchar(50) NOT NULL,
+  `Quantity` decimal(4,2) NOT NULL,
+  `Unit` varchar(20) NOT NULL,
+  `ExpiryDate` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Products`
+--
+
+CREATE TABLE `Products` (
+  `SKU_ID` int(11) NOT NULL,
+  `ProductName` varchar(20) NOT NULL,
+  `Price` decimal(6,2) NOT NULL,
+  `QuantityAvailable` int(11) NOT NULL,
+  `Description` varchar(300) NOT NULL,
+  `Category` varchar(20) NOT NULL,
+  `ExpiryDate` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `Products`
+--
+
+INSERT INTO `Products` (`SKU_ID`, `ProductName`, `Price`, `QuantityAvailable`, `Description`, `Category`, `ExpiryDate`) VALUES
+(1, 'Gluten Free Matzo', 1.00, 362, 'Low in fat, sugar and salt, it’s a perfect base for all manner of toppings and with just a few ingredients and a minute or two under the grill makes a perfect mini pizza!', 'Snacks', '2025-01-01'),
+(2, 'Gluten Free Cracker', 1.00, 498, 'Rakusen’s Gluten Free Crackers are a healthy, versatile choice for a range of toppings.\r\n\r\nTasty, crispy and naturally free from gluten, they are the perfect option for guilt-free snacking.', 'Snacks', '2025-07-03'),
+(3, 'Traditional Matzos', 2.00, 400, 'Our traditional Matzo, the one that comes in the big blue box, is also our most versatile cracker.\r\n\r\nLow in fat, sugar and salt, it’s a perfect base for all manner of toppings and with just a few ingredients and a minute or two under the grill makes a perfect mini pizza!', 'Snack', '2024-09-09');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `PurchaseOrders`
+--
+
+CREATE TABLE `PurchaseOrders` (
+  `PurchaseOrder_ID` int(11) NOT NULL,
+  `SKU_ID` int(11) NOT NULL,
+  `Vendor_ID` int(11) NOT NULL,
+  `Quantity` int(11) NOT NULL,
+  `OrderDate` datetime NOT NULL,
+  `Status` varchar(20) NOT NULL,
+  `TotalAmount` decimal(4,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Users`
+--
+
+CREATE TABLE `Users` (
+  `User_ID` int(11) NOT NULL,
+  `Username` varchar(20) NOT NULL,
+  `Password` varchar(30) NOT NULL,
+  `UserType` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Vendors`
+--
+
+CREATE TABLE `Vendors` (
+  `Vendor_ID` int(11) NOT NULL,
+  `User_ID` int(11) NOT NULL,
+  `VendorName` varchar(30) NOT NULL,
+  `ContactInfo` varchar(50) NOT NULL,
+  `Email` varchar(50) NOT NULL,
+  `UserType` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `Ingredients`
+--
+ALTER TABLE `Ingredients`
+  ADD PRIMARY KEY (`Ingredient_ID`),
+  ADD KEY `SKU_ID` (`SKU_ID`);
+
+--
+-- Indexes for table `Products`
+--
+ALTER TABLE `Products`
+  ADD PRIMARY KEY (`SKU_ID`);
+
+--
+-- Indexes for table `PurchaseOrders`
+--
+ALTER TABLE `PurchaseOrders`
+  ADD PRIMARY KEY (`PurchaseOrder_ID`),
+  ADD KEY `SKU_ID` (`SKU_ID`,`Vendor_ID`),
+  ADD KEY `Vendor_ID` (`Vendor_ID`);
+
+--
+-- Indexes for table `Users`
+--
+ALTER TABLE `Users`
+  ADD PRIMARY KEY (`User_ID`);
+
+--
+-- Indexes for table `Vendors`
+--
+ALTER TABLE `Vendors`
+  ADD PRIMARY KEY (`Vendor_ID`),
+  ADD KEY `User_ID` (`User_ID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `Ingredients`
+--
+ALTER TABLE `Ingredients`
+  MODIFY `Ingredient_ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `Products`
+--
+ALTER TABLE `Products`
+  MODIFY `SKU_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `PurchaseOrders`
+--
+ALTER TABLE `PurchaseOrders`
+  MODIFY `PurchaseOrder_ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `Users`
+--
+ALTER TABLE `Users`
+  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `Vendors`
+--
+ALTER TABLE `Vendors`
+  MODIFY `Vendor_ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `Ingredients`
+--
+ALTER TABLE `Ingredients`
+  ADD CONSTRAINT `ingredients_ibfk_1` FOREIGN KEY (`SKU_ID`) REFERENCES `Products` (`SKU_ID`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Constraints for table `PurchaseOrders`
+--
+ALTER TABLE `PurchaseOrders`
+  ADD CONSTRAINT `purchaseorders_ibfk_1` FOREIGN KEY (`SKU_ID`) REFERENCES `Products` (`SKU_ID`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `purchaseorders_ibfk_2` FOREIGN KEY (`Vendor_ID`) REFERENCES `Vendors` (`Vendor_ID`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Vendors`
+--
+ALTER TABLE `Vendors`
+  ADD CONSTRAINT `Vendors_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `Users` (`User_ID`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
