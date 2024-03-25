@@ -273,13 +273,8 @@ export const mockDataProducts = [
   {
     id: 6,
     name: "Crackers",
-<<<<<<< HEAD
-    price: 35,
-    size: 60,
-=======
     price: 11,
     size: 35,
->>>>>>> 990a4a98ffa03628fba66154206163f8ef96fa8e
     unit: 35,
     expirydate: "2024/10/10",
   },
