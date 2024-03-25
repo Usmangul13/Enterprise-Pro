@@ -11,7 +11,7 @@ const Applications = () => {
     const columns = [
         {field: "name", headerName: "Name", flex: 1, cellClassName: "name-column--cell" },
         {field: "contactinfo", headerName: "Contact Information", flex: 1 },
-        {field: "email", headerName: "Email", flex: 1 },        
+        {field: "email", headerName: "Email", flex: 1 },         
     ];
 
     return (
