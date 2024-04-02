@@ -1,4 +1,5 @@
 // Server side code for Booking in products (function 3)................................................................................................
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const { v4: uuidv4 } = require('uuid');
@@ -18,7 +19,7 @@ class Product {
             host: 'localhost',
             user: 'your_mysql_username',
             password: 'your_mysql_password',
-            database: 'Rakusens' // Change this to your database name
+            database: 'Rakusens' // Change this to our database name if nessecary
         });
 
         // Connect to MySQL
@@ -82,6 +83,6 @@ class Product {
     }
 }
 
-// Create an instance of Product to start the server
+// Creates an instance of Product to start the server
 const product = new Product();
 

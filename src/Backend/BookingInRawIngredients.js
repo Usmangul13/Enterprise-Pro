@@ -19,7 +19,7 @@ class Ingredient {
             host: 'localhost',
             user: 'your_username',
             password: 'your_password',
-            database: 'Rakusens'
+            database: 'Rakusens'    // Change this to our database name if nessecary
         });
 
         // Connect to MySQL database
@@ -94,4 +94,4 @@ class Ingredient {
 }
 
 // Create an instance of IngredientManager to start the server
-const ingredientManager = new IngredientManager();
+const ingredient = new Ingredient();
