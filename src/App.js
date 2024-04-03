@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { Routes, Route } from "react-router-dom";
@@ -19,6 +20,7 @@ import Line from "./scenes/line";
 
 function App() {
   const [theme, colorMode] = useMode();
+  const [notifications, setNotifications] = useState([]); // Define notifications state
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -27,7 +29,7 @@ function App() {
         <div className="app">
           <Sidebar />
           <main className="content">
-            <Topbar />
+          <Topbar setNotifications={setNotifications} /> {/* Pass setNotifications as a prop */}
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/users" element={<Users />} />
