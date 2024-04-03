@@ -59,6 +59,5 @@ const Products = () => {
             </Box>
         </Box>
     );
-};
-
+            };
 export default Products;

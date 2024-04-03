@@ -232,7 +232,7 @@ export const mockTransactions = [
 export const mockDataProducts = [
   {
     id: 1,
-    name: "Crackers",
+    name: "Crackers 1",
     price: 35,
     size: 40,
     unit: 35,
@@ -240,7 +240,7 @@ export const mockDataProducts = [
   },
   {
     id: 2,
-    name: "Crackers",
+    name: "Crackers 2",
     price: 35,
     size: 35,
     unit: 35,
@@ -248,7 +248,7 @@ export const mockDataProducts = [
   },
   {
     id: 3,
-    name: "Crackers",
+    name: "Crackers 3",
     price: 35,
     size: 50,
     unit: 35,
@@ -256,7 +256,7 @@ export const mockDataProducts = [
   },
   {
     id: 4,
-    name: "Crackers",
+    name: "Crackers 4",
     price: 35,
     size: 35,
     unit: 35,
@@ -264,27 +264,27 @@ export const mockDataProducts = [
   },
   {
     id: 5,
-    name: "Crackers",
+    name: "Crackers 5",
     price: 35,
     size: 10,
     unit: 35,
-    expirydate: "2024/10/10",
+    expirydate: "2024/04/10",
   },
   {
     id: 6,
-    name: "Crackers",
+    name: "Crackers 6",
     price: 11,
     size: 35,
     unit: 35,
-    expirydate: "2024/10/10",
+    expirydate: "2024/05/10",
   },
   {
     id: 7,
-    name: "Crackers",
+    name: "Crackers 7",
     price: 35,
     size: 35,
     unit: 35,
-    expirydate: "2024/10/10",
+    expirydate: "2024/04/24",
   },
 ];
 
@@ -299,7 +299,7 @@ export const mockDataIngredients = [
   },
   {
     id: 2,
-    name: "Flour",
+    name: "Eggs",
     quantity: 35,
     size: 35,
     unit: 35,
@@ -307,23 +307,23 @@ export const mockDataIngredients = [
   },
   {
     id: 3,
-    name: "Flour",
+    name: "Yeast",
     quantity: 35,
     size: 35,
     unit: 35,
-    expirydate: "2024/10/10",
+    expirydate: "2024/04/20",
   },
   {
     id: 4,
-    name: "Flour",
+    name: "Salt",
     quantity: 35,
     size: 35,
     unit: 35,
-    expirydate: "2024/10/10",
+    expirydate: "2024/05/15",
   },
   {
     id: 5,
-    name: "Flour",
+    name: "Sugar",
     quantity: 35,
     size: 35,
     unit: 35,
@@ -331,7 +331,7 @@ export const mockDataIngredients = [
   },
   {
     id: 6,
-    name: "Flour",
+    name: "Flavourings",
     quantity: 35,
     size: 35,
     unit: 35,
