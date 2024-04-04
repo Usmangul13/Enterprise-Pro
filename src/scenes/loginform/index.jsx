@@ -3,6 +3,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
+import axios from "axios";
 
 const initialValues = {
     username: "",
@@ -17,9 +18,13 @@ const userSchema = yup.object().shape({
 const Form = () => {
     const isNonMobile = useMediaQuery("(min-width:600px)");
 
-    const handleFormSubmit = (values) => {
-        console.log(values);
-        // You can add your login logic here
+    const handleFormSubmit = async (values) => {
+        try {
+            const response = await axios.post("/login", values);
+            console.log(response.data);
+        } catch (error) {
+            console.error("Error:", error);
+        }
     };
 
     return (
