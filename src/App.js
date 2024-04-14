@@ -23,7 +23,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const handleLogin = () => {
-    // Your login logic goes here, for simplicity, let's just set loggedIn to true
+    // login logic
     setLoggedIn(true);
   };
 
