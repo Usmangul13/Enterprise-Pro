@@ -1,13 +1,16 @@
 // Importing MySQL module
 const mysql = require('mysql');
 
-// Creates a connection to the database
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'Rakusens'
-});
+// Fuction to create a connection to database
+function createMySQLConnection() {
+    return mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'Rakusens'
+    });
+
+}
 
 // Function to fetch users from the database
 function fetchUsers(callback) {
@@ -79,9 +82,22 @@ function fetchIngredients(callback) {
     });
 }
 
-// Exporting the fetchUsers function
+// Function to close the connection to the database
+function closeMySQLConnection(connection) {
+    connection.end(function(err) {
+        if (err) {
+            console.error('Error closing MySQL connection: ' + err.message);
+        } else {
+            console.log('MySQL connection closed successfully.');
+        }
+    });
+}
+
+// Exporting the functions to use in other files
+module.exports.createMySQLConnection = createMySQLConnection;
 module.exports.fetchUsers = fetchUsers;
 module.exports.fetchPurchaseOrders = fetchPurchaseOrders;
 module.exports.fetchVendors = fetchVendors;
 module.exports.fetchProducts = fetchProducts;
 module.exports.fetchIngredients = fetchIngredients;
+module.exports.closeMySQLConnection = closeMySQLConnection;
