@@ -7,6 +7,8 @@ import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
 import Users from "./scenes/users";
 import Form from "./scenes/form";
+import IngredientForm from "./scenes/ingredientform";
+import ProductForm from "./scenes/productform";
 import Applications from "./scenes/applications";
 import Orders from "./scenes/orders";
 import FAQ from "./scenes/faq";
@@ -70,18 +72,14 @@ function App() {
                   <Route path="/" element={<Dashboard />} />
                   <Route path="/users" element={<Users />} />
                   <Route path="/form" element={<Form />} />
-                  <Route
-                    path="/applications"
-                    element={<Applications />}
-                  />
+                  <Route path="/ingredientform" element={<Form />} />
+                  <Route path="/productform" element={<Form />} />
+                  <Route path="/applications" element={<Applications />} />
                   <Route path="/orders" element={<Orders />} />
                   <Route path="/faq" element={<FAQ />} />
-
+            
                   <Route path="/products" element={<Products />} />
-                  <Route
-                    path="/ingredients"
-                    element={<Ingredients />}
-                  />
+                  <Route path="/ingredients" element={<Ingredients />} />
 
                   <Route path="/bar" element={<Bar />} />
                   <Route path="/pie" element={<Pie />} />
