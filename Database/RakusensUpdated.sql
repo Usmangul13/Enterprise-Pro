@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 06, 2024 at 06:57 PM
+-- Generation Time: Apr 16, 2024 at 02:51 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -107,6 +107,13 @@ CREATE TABLE `Users` (
   `Status` enum('Approved','Pending','Deactivated','') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
+--
+-- Dumping data for table `Users`
+--
+
+INSERT INTO `Users` (`User_ID`, `Username`, `Password`, `UserType`, `Status`) VALUES
+(100, 'Dave', 'Jones', 'Vendor', 'Approved');
+
 -- --------------------------------------------------------
 
 --
@@ -200,7 +207,7 @@ ALTER TABLE `PurchaseOrders`
 -- AUTO_INCREMENT for table `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT for table `Vendors`
@@ -216,27 +223,27 @@ ALTER TABLE `Vendors`
 -- Constraints for table `ImageGallery`
 --
 ALTER TABLE `ImageGallery`
-  ADD CONSTRAINT `imagegallery_ibfk_1` FOREIGN KEY (`SKU_ID`) REFERENCES `Products` (`SKU_ID`) ON DELETE CASCADE,
-  ADD CONSTRAINT `imagegallery_ibfk_2` FOREIGN KEY (`Ingredient_ID`) REFERENCES `Ingredients` (`Ingredient_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `imagegallery_ibfk_1` FOREIGN KEY (`SKU_ID`) REFERENCES `test`.`Products` (`SKU_ID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `imagegallery_ibfk_2` FOREIGN KEY (`Ingredient_ID`) REFERENCES `test`.`Ingredients` (`Ingredient_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `Ingredients`
 --
 ALTER TABLE `Ingredients`
-  ADD CONSTRAINT `ingredients_ibfk_1` FOREIGN KEY (`SKU_ID`) REFERENCES `Products` (`SKU_ID`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `ingredients_ibfk_1` FOREIGN KEY (`SKU_ID`) REFERENCES `test`.`Products` (`SKU_ID`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `PurchaseOrders`
 --
 ALTER TABLE `PurchaseOrders`
-  ADD CONSTRAINT `purchaseorders_ibfk_1` FOREIGN KEY (`SKU_ID`) REFERENCES `Products` (`SKU_ID`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `purchaseorders_ibfk_2` FOREIGN KEY (`Vendor_ID`) REFERENCES `Vendors` (`Vendor_ID`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `purchaseorders_ibfk_1` FOREIGN KEY (`SKU_ID`) REFERENCES `test`.`Products` (`SKU_ID`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `purchaseorders_ibfk_2` FOREIGN KEY (`Vendor_ID`) REFERENCES `test`.`Vendors` (`Vendor_ID`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `Vendors`
 --
 ALTER TABLE `Vendors`
-  ADD CONSTRAINT `Vendors_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `Users` (`User_ID`);
+  ADD CONSTRAINT `Vendors_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `test`.`Users` (`User_ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
