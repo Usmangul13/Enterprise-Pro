@@ -121,6 +121,22 @@ const Sidebar = () => {
                             selected={selected}
                             setSelected={setSelected}                        
                         />
+
+                        <Item 
+                            title="Product Form"
+                            to="/productform"
+                            icon={<ReceiptOutlinedIcon />}
+                            selected={selected}
+                            setSelected={setSelected}                        
+                        />
+
+                        <Item 
+                            title="Ingredient Form"
+                            to="/ingredientform"
+                            icon={<ReceiptOutlinedIcon />}
+                            selected={selected}
+                            setSelected={setSelected}                        
+                        />
                         
                         <Item 
                             title="Applications"
