@@ -46,6 +46,119 @@ app.get('/getProducts', (req, res) => {
     });
 });
 
+// Function to fetch users from the database
+app.get('/getUsers', (req, res) => {
+    const query = 'SELECT * FROM Users';
+
+    connection.query(query, (error, results) => {
+        if (error) {
+            console.error('Error fetching users:', error);
+            res.status(500).json({ error: 'Error fetching users' });
+        } else {
+            // Modify each object in the results array
+            const modifiedResults = results.map(user => {
+                return {
+                    ...user,
+                    id: user.User_ID,
+                };
+            });
+
+            res.json(modifiedResults);
+        }
+    });
+});
+
+// Function to fetch ingredients from the database
+app.get('/getIngredients', (req, res) => {
+    const query = 'SELECT * FROM Ingredients';
+
+    connection.query(query, (error, results) => {
+        if (error) {
+            console.error('Error fetching ingredients:', error);
+            res.status(500).json({ error: 'Error fetching ingredients' });
+        } else {
+            // Modify each object in the results array
+            const modifiedResults = results.map(ingredient => {
+                return {
+                    ...ingredient,
+                    id: ingredient.Ingredient_ID,
+                };
+            });
+
+            res.json(modifiedResults);
+        }
+    });
+});
+
+// Function to fetch purchased orders from the database
+app.get('/getPurchaseOrders', (req, res) => {
+    const query = 'SELECT * FROM PurchaseOrders';
+
+    connection.query(query, (error, results) => {
+        if (error) {
+            console.error('Error fetching orders:', error);
+            res.status(500).json({ error: 'Error fetching orders' });
+        } else {
+            // Modify each object in the results array
+            const modifiedResults = results.map(purchaseorder => {
+                return {
+                    ...purchaseorder,
+                    id: purchaseorder.PurchaseOrder_ID,
+                };
+            });
+
+            res.json(modifiedResults);
+        }
+    });
+});
+
+// Function to fetch Vendors from the database
+app.get('/getVendors', (req, res) => {
+    const query = 'SELECT * FROM Vendors';
+
+    connection.query(query, (error, results) => {
+        if (error) {
+            console.error('Error fetching vendors:', error);
+            res.status(500).json({ error: 'Error fetching vendors' });
+        } else {
+            // Modify each object in the results array
+            const modifiedResults = results.map(vendors => {
+                return {
+                    ...vendors,
+                    id: vendors.Vendor_ID,
+                };
+            });
+
+            res.json(modifiedResults);
+        }
+    });
+});
+
+// Function to fetch Vendors from the database
+app.get('/getImageGallery', (req, res) => {
+    const query = 'SELECT * FROM ImageGallery';
+
+    connection.query(query, (error, results) => {
+        if (error) {
+            console.error('Error fetching images', error);
+            res.status(500).json({ error: 'Error fetching images' });
+        } else {
+            // Modify each object in the results array
+            const modifiedResults = results.map(images => {
+                return {
+                    ...images,
+                    id: images.Image_ID,
+                };
+            });
+
+            res.json(modifiedResults);
+        }
+    });
+});
+
+
+
+
 
 
 
