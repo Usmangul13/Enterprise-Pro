@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 16, 2024 at 09:49 PM
+-- Generation Time: Apr 17, 2024 at 12:32 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -49,6 +49,14 @@ CREATE TABLE `Ingredients` (
   `Unit` varchar(20) NOT NULL,
   `ExpiryDate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `Ingredients`
+--
+
+INSERT INTO `Ingredients` (`Ingredient_ID`, `SKU_ID`, `IngredientName`, `Quantity`, `Size`, `Unit`, `ExpiryDate`) VALUES
+(1, 1, 'Flour', 60.00, 1, 'kg', '2024-09-09'),
+(2, 1, 'Sugar', 90.00, 5, 'kg', '2026-04-15');
 
 -- --------------------------------------------------------
 
@@ -189,7 +197,7 @@ ALTER TABLE `ImageGallery`
 -- AUTO_INCREMENT for table `Ingredients`
 --
 ALTER TABLE `Ingredients`
-  MODIFY `Ingredient_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Ingredient_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `Products`
