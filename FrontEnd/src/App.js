@@ -72,8 +72,8 @@ function App() {
                   <Route path="/" element={<Dashboard />} />
                   <Route path="/users" element={<Users />} />
                   <Route path="/form" element={<Form />} />
-                  <Route path="/ingredientform" element={<Form />} />
-                  <Route path="/productform" element={<Form />} />
+                  <Route path="/ingredientform" element={<IngredientForm />} />
+                  <Route path="/productform" element={<ProductForm />} />
                   <Route path="/applications" element={<Applications />} />
                   <Route path="/orders" element={<Orders />} />
                   <Route path="/faq" element={<FAQ />} />
