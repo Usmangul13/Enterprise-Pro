@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Box, IconButton, Menu, MenuItem, useTheme } from "@mui/material";
 import { useContext} from "react";
 import { ColorModeContext, tokens } from "../../theme";
+import { mockDataIngredients } from "../../data/mockData";
 import InputBase from "@mui/material/InputBase";
-import { mockDataProducts, mockDataIngredients} from "../../data/mockData";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
@@ -16,19 +16,44 @@ const Topbar = () => {
     const colors = tokens(theme.palette.mode);
     const colorMode = useContext(ColorModeContext);
 
+    const [products, setProducts] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+      
+
+    const fetchProducts = async () => {
+        try {
+          const response = await fetch('http://localhost:3007/getProducts');
+          if (!response.ok) {
+            throw new Error('Error fetching products');
+          }
+
+          const data = await response.json();
+          console.log(data[1]);
+
+          setProducts(data);
+          setIsLoading(false); 
+        } catch (error) {
+          console.error(error);
+          setError(error.message);
+          setIsLoading(false);
+        }
+      };
+
     // Define notifications state
     const [notifications, setNotifications] = useState([]);
     const [anchorEl, setAnchorEl] = useState(null);
 
     useEffect(() => {
         console.log("useEffect hook is running");
+        fetchProducts();
     
         // Function to display alerts for products
         const displayProductAlerts = (product) => {
             let alertMessages = [];
     
             // Check for low stock
-            if (product.unit < 40) {
+            if (product.unit < 400) {
                 alertMessages.push(`Low stock alert for product: ${product.name}`);
             }
     
@@ -50,7 +75,7 @@ const Topbar = () => {
         };
     
         // Call displayAlerts function for each product
-        mockDataProducts.forEach((product) => displayProductAlerts(product));
+        products.forEach((product) => displayProductAlerts(product));
     
         // Function to display alerts for ingredients
         const displayIngredientAlerts = (ingredient) => {
