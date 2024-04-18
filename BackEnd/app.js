@@ -115,6 +115,28 @@ app.post('/createIngredient', (req, res) => {
 });
 
 
+// Function to create a new product
+app.post('/createproduct', (req, res) => {
+    // Extract product data from request body
+    const { skuid, productname, price, size, unit,quantityavailable, description, category, expirydate } = req.body;
+
+    // query to insert a new product into the database
+    const query = `INSERT INTO Products (SKU_ID, ProductName, Price ,Size, Unit, QuantityAvailable, Description, Category, ExpiryDate) 
+                   VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    
+    // Executes the query
+    connection.query(query, [skuid, productname, price, size, unit,quantityavailable, description, category, expirydate], (error, results) => {
+        if (error) {
+            console.error('Error creating product:', error);
+            res.status(500).json({ error: 'Error creating product' });
+        } else {
+            // Return success message 
+            res.json({ message: 'Product created successfully', id: results.insertId });
+        }
+    });
+});
+
+
 // Function to fetch purchased orders from the database
 app.get('/getPurchaseOrders', (req, res) => {
     const query = 'SELECT * FROM PurchaseOrders';
