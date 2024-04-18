@@ -88,7 +88,32 @@ app.get('/getIngredients', (req, res) => {
             res.json(modifiedResults);
         }
     });
+    
 });
+
+app.use(express.json());
+
+// Function to create a new ingredient
+app.post('/createIngredient', (req, res) => {
+    // Extract ingredient data from request body
+    const { skuid, ingredientname, quantity, size, unit, expirydate } = req.body;
+
+    // query to insert a new ingredient into the database
+    const query = `INSERT INTO Ingredients (SKU_ID, IngredientName, Quantity, Size, Unit, ExpiryDate) 
+                   VALUES ( ?, ?, ?, ?, ?, ?)`;
+    
+    // Executes the query
+    connection.query(query, [skuid, ingredientname, quantity, size, unit, expirydate], (error, results) => {
+        if (error) {
+            console.error('Error creating ingredient:', error);
+            res.status(500).json({ error: 'Error creating ingredient' });
+        } else {
+            // Return success message 
+            res.json({ message: 'Ingredient created successfully', id: results.insertId });
+        }
+    });
+});
+
 
 // Function to fetch purchased orders from the database
 app.get('/getPurchaseOrders', (req, res) => {
