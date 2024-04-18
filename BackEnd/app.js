@@ -136,6 +136,42 @@ app.post('/createproduct', (req, res) => {
     });
 });
 
+// Function to delete a product
+app.delete('/deleteProduct/:id', (req, res) => {
+    const id = req.params.id;
+
+    const query = 'DELETE FROM Products WHERE SKU_ID = ?';
+
+    connection.query(query, [id], (error, result) => {
+        if (error) {
+            console.error('Error deleting product:', error);
+            res.status(500).json({ error: 'Error deleting product' });
+        } else {
+            res.json({ message: 'Product deleted successfully' });
+        }
+    });
+});
+
+
+
+// Function to update a product
+app.put('/updateProduct/:id', (req, res) => {
+    const id = req.params.id;
+    const newData = req.body;
+
+    const query = 'UPDATE Products SET ? WHERE SKU_ID = ?';
+
+    connection.query(query, [newData, id], (error, result) => {
+        if (error) {
+            console.error('Error updating product:', error);
+            res.status(500).json({ error: 'Error updating product' });
+        } else {
+            res.json({ message: 'Product updated successfully' });
+        }
+    });
+});
+
+
 
 // Function to fetch purchased orders from the database
 app.get('/getPurchaseOrders', (req, res) => {

@@ -1,6 +1,7 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, IconButton, Snackbar } from "@mui/material";
 import React, { useState, useEffect } from 'react';
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { Delete, Edit, Close as CloseIcon } from "@mui/icons-material";
 import { tokens } from "../../theme";
 import { useTheme } from "@mui/material";
 import Header from "../../components/Header";
@@ -11,21 +12,8 @@ const Products = () => {
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [message, setMessage] = useState('');
 
-    const mockDataProducts = [
-        {
-            "id": 2,
-            "ProductName": "Gluten Free Cracker",
-            "Price": 1,
-            "Size": 0,
-            "Unit": "",
-            "QuantityAvailable": 498,
-            "Description": "Rakusen’s Gluten Free Crackers are a healthy, versatile choice for a range of toppings.\r\n\r\nTasty, crispy and naturally free from gluten, they are the perfect option for guilt-free snacking.",
-            "Category": "Snacks",
-            "ExpiryDate": "2025-07-02T23:00:00.000Z"
-        }
-      ];
-      
 
     const fetchProducts = async () => {
         try {
@@ -35,8 +23,6 @@ const Products = () => {
           }
 
           const data = await response.json();
-          console.log(data[1]);
-
           setProducts(data);
           setIsLoading(false); 
         } catch (error) {
@@ -44,18 +30,49 @@ const Products = () => {
           setError(error.message);
           setIsLoading(false);
         }
-      };
+    };
 
     useEffect(() => {
         fetchProducts();
-      }, []);
+    }, []);
 
-      const columns = [
+    const handleDelete = async (id) => {
+      try {
+          const response = await fetch(`http://localhost:3007/deleteProduct/${id}`, {
+              method: 'DELETE',
+              headers: {
+                  'Content-Type': 'application/json'
+              }
+          });
+          
+          if (!response.ok) {
+              throw new Error('Error deleting product');
+          }
+  
+          // Filter out the deleted product from the state
+          const updatedProducts = products.filter(product => product.id !== id);
+          setProducts(updatedProducts);
+          setMessage('Product deleted successfully');
+      } catch (error) {
+          console.error(error);
+          setMessage('Failed to delete product');
+      }
+  };
+    const handleEdit = (id) => {
+        
+        console.log("Editing product with ID:", id);
+    };
+
+    const handleCloseSnackbar = () => {
+      setMessage('');
+  };
+  
+    const columns = [
         { field: "id", headerName: "SKU ID", flex: 0.5 },
         { field: "ProductName", headerName: "Product Name", flex: 1, cellClassName: "name-column--cell" },
         { field: "Price", headerName: "Price", flex: 1, renderCell: (params) => (
             <Typography color="green" variant="body1">
-                ${params.row.Price} {/* Ensure that the field name is correct */}
+                £{params.row.Price}
             </Typography>
         ) },
         { field: "Size", headerName: "Size", type: "number", flex: 1 },
@@ -64,8 +81,18 @@ const Products = () => {
         { field: "Description", headerName: "Description", flex: 1 },
         { field: "Category", headerName: "Category", flex: 1 },
         { field: "ExpiryDate", headerName: "Expiry Date", headerAlign: "left", align: "left" },
+        {
+            field: "actions",
+            headerName: "Actions",
+            flex: 1,
+            renderCell: (params) => (
+                <Box>
+                    <IconButton onClick={() => handleDelete(params.row.id)}><Delete /></IconButton>
+                    <IconButton onClick={() => handleEdit(params.row.id)}><Edit /></IconButton>
+                </Box>
+            )
+        }
     ];
-    
 
     return (
         <Box m="20px">
@@ -101,7 +128,18 @@ const Products = () => {
               }}
             >
                 <DataGrid rows={products} columns={columns} components={{ Toolbar: GridToolbar }} />
-            </Box>
+                </Box>
+            <Snackbar
+                open={Boolean(message)}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+                message={message}
+                action={
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackbar}>
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                }
+            />
         </Box>
     );
 };
