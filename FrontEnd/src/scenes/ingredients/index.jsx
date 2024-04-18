@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Box } from "@mui/material";
+import { Box, IconButton, Snackbar } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { Delete, Edit, Close as CloseIcon } from "@mui/icons-material";
 import { tokens } from "../../theme";
 import { useTheme } from "@mui/material";
 import Header from "../../components/Header";
@@ -11,6 +12,7 @@ const Ingredients = () => {
     const [ingredients, setIngredients] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [message, setMessage] = useState('');
 
     useEffect(() => {
         const fetchIngredients = async () => {
@@ -31,6 +33,38 @@ const Ingredients = () => {
         fetchIngredients();
     }, []);
 
+    const handleDelete = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:3007/deleteIngredient/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error('Error deleting ingredient');
+            }
+
+            // Filter out the deleted ingredient from the state
+            const updatedIngredients = ingredients.filter(ingredient => ingredient.Ingredient_ID !== id);
+            setIngredients(updatedIngredients);
+            setMessage('Ingredient deleted successfully');
+        } catch (error) {
+            console.error(error);
+            setMessage('Failed to delete ingredient');
+        }
+    };
+    const handleEdit = (id) => {
+        
+        console.log("Editing ingredient with ID:", id);
+    };
+
+
+    const handleCloseSnackbar = () => {
+        setMessage('');
+    };
+
     const columns = [
         { field: "Ingredient_ID", headerName: "Ingredient ID", flex: 0.5 },
         { field: "SKU_ID", headerName: "SKU ID", flex: 0.5 },
@@ -39,9 +73,23 @@ const Ingredients = () => {
         { field: "Size", headerName: "Size", type: "number", flex: 1 },
         { field: "Unit", headerName: "Unit", flex: 1 },
         { field: "ExpiryDate", headerName: "Expiry Date", headerAlign: "left", align: "left" },
+        {
+            field: "actions",
+            headerName: "Actions",
+            flex: 1,
+            renderCell: (params) => (
+                <Box>
+                    <IconButton onClick={() => handleDelete(params.row.Ingredient_ID)}><Delete /></IconButton>
+                    <IconButton onClick={() => handleEdit(params.row.Ingredient_ID)}><Edit /></IconButton>
+                </Box>
+            )
+        }
     ];
     
     return (
+       
+    
+    
         <Box m="20px">
             <Header title="INGREDIENTS" subtitle="Ingredients" />
             <Box
@@ -76,6 +124,17 @@ const Ingredients = () => {
             >
                 <DataGrid rows={ingredients} columns={columns} components={{ Toolbar: GridToolbar }} />
             </Box>
+            <Snackbar
+                open={Boolean(message)}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+                message={message}
+                action={
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackbar}>
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                }
+            />
         </Box>
     );
 };

@@ -114,6 +114,41 @@ app.post('/createIngredient', (req, res) => {
     });
 });
 
+// Function to delete a ingredient
+app.delete('/deleteIngredient/:id', (req, res) => {
+    const id = req.params.id;
+
+    const query = 'DELETE FROM Ingredients WHERE Ingredient_ID = ?';
+
+    connection.query(query, [id], (error, result) => {
+        if (error) {
+            console.error('Error deleting ingredient:', error);
+            res.status(500).json({ error: 'Error deleting ingredient' });
+        } else {
+            res.json({ message: 'Ingredient deleted successfully' });
+        }
+    });
+});
+
+
+
+// Function to update a ingredient
+app.put('/updateIngredient/:id', (req, res) => {
+    const id = req.params.id;
+    const newData = req.body;
+
+    const query = 'UPDATE Ingredients SET ? WHERE Ingredient_ID = ?';
+
+    connection.query(query, [newData, id], (error, result) => {
+        if (error) {
+            console.error('Error updating Ingredient:', error);
+            res.status(500).json({ error: 'Error updating Ingredient' });
+        } else {
+            res.json({ message: 'Ingredient updated successfully' });
+        }
+    });
+});
+
 
 // Function to create a new product
 app.post('/createproduct', (req, res) => {
