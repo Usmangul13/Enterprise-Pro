@@ -151,9 +151,44 @@ app.put('/updateIngredient/:id', (req, res) => {
 
 
 // Function to create a new product
+app.post('/createuser', (req, res) => {
+    // Extract product data from request body
+
+   const {
+        userid,
+        firstName,
+        lastName,
+        email,
+        contact,
+        age
+    } = req.body;
+
+    console.log('req.body:', req.body);
+   
+    // query to insert a new product into the database
+    const query = `INSERT INTO Users (User_ID, firstName, lastName, contact, email, age) 
+                   VALUES ( ?, ?, ?, ?, ?, ?)`;
+    
+    // Executes the query
+    connection.query(query, [userid, firstName, lastName, contact, email, age], (error, results) => {
+        if (error) {
+            console.error('Error creating user:', error);
+            res.status(500).json({ error: 'Error creating user' });
+        } else {
+            // Return success message 
+            res.json({ message: 'User created successfully', id: results.insertId });
+        }
+    });
+});
+
+
+
+// Function to create a new product
 app.post('/createproduct', (req, res) => {
     // Extract product data from request body
     const { skuid, productname, price, size, unit,quantityavailable, description, category, expirydate } = req.body;
+
+    console.log('req.body:product', req.body);
 
     // query to insert a new product into the database
     const query = `INSERT INTO Products (SKU_ID, ProductName, Price ,Size, Unit, QuantityAvailable, Description, Category, ExpiryDate) 

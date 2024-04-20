@@ -3,6 +3,8 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
+import axios from 'axios';
+import React, { useState } from 'react'; // Import useState from React
 
 const initialValues = {
     firstName: "",
@@ -22,11 +24,29 @@ const userSchema = yup.object().shape({
     age: yup.string().required("required"),
 })
 
-const Form = () => {
+const UserForm = () => {
     const isNonMobile = useMediaQuery("(min-width:600px)");
 
-    const handleFormSubmit = (values) => {
+    const [submitting, setSubmitting] = useState(false);
+    const [successMessage, setSuccessMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const handleFormSubmit = async (values) => {
         console.log(values);
+
+        try {
+            // Send a POST request to the backend endpoint
+            const response = await axios.post('http://localhost:3007/createuser', values);
+            console.log(response.data);
+            setSuccessMessage("USER CREATED SUCCESSFULLY");
+            setErrorMessage("");
+        } catch (error) {
+            console.error('Error creating user:', error);
+            setSuccessMessage("");
+            setErrorMessage("FAILED TO CREATE USER");
+        } finally {
+           setSubmitting(false);
+        }
     }
 
     return <Box m="20px">
@@ -125,4 +145,4 @@ const Form = () => {
     </Box>;
 };
 
-export default Form;
+export default UserForm;
