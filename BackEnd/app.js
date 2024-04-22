@@ -150,7 +150,7 @@ app.put('/updateIngredient/:id', (req, res) => {
 });
 
 
-// Function to create a new product
+// Function to create a new user
 app.post('/createuser', (req, res) => {
     // Extract product data from request body
 
@@ -165,7 +165,7 @@ app.post('/createuser', (req, res) => {
 
     console.log('req.body:', req.body);
    
-    // query to insert a new product into the database
+    // query to insert a new user into the database
     const query = `INSERT INTO Users (User_ID, firstName, lastName, contact, email, age) 
                    VALUES ( ?, ?, ?, ?, ?, ?)`;
     
