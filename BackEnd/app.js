@@ -68,29 +68,6 @@ app.get('/getUsers', (req, res) => {
     });
 });
 
-app.use(express.json());
-
-app.post('/createusers', (req, res) => {
-    // Extract user data from request body
-    const {userid, username, password, usertype } = req.body;
-
-    // Query to insert a new user into the database
-    const query = `INSERT INTO users (User_ID, Username, Password, UserType) 
-                   VALUES (?, ?, ?, ?)`;
-    
-    // Executes the query
-    connection.query(query, [userid, username, password, usertype ], (error, results) => {
-        if (error) {
-            console.error('Error creating user:', error);
-            res.status(500).json({ error: 'Error creating user' });
-        } else {
-            // Return success message 
-            res.json({ message: 'User created successfully', id: results.insertId });
-        }
-    });
-});
-
-
 // Function to fetch ingredients from the database
 app.get('/getIngredients', (req, res) => {
     const query = 'SELECT * FROM Ingredients';
@@ -194,9 +171,6 @@ app.post('/createproduct', (req, res) => {
     });
 });
 
-
-
-
 // Function to delete a product
 app.delete('/deleteProduct/:id', (req, res) => {
     const id = req.params.id;
@@ -277,6 +251,38 @@ app.get('/getVendors', (req, res) => {
         }
     });
 });
+
+
+
+
+
+
+
+
+app.use(express.json());
+// Function to fetch login users from the database
+app.get('/getloginUsers', (req, res) => {
+    const id = req.params.id;
+    const query = 'SELECT Username, Password FROM Users';
+
+    connection.query(query, (error, results) => {
+        if (error) {
+            console.error('Error fetching users:', error);
+            res.status(500).json({ error: 'Error fetching users' });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+
+
+
+
+
+
+
+
 
 // Function to fetch Vendors from the database
 app.get('/getImageGallery', (req, res) => {
