@@ -2,6 +2,7 @@
 const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
+const modifyResults = require('./functions/modifyResults');
 
 // Create an instance of Express
 const app = express();
@@ -24,7 +25,9 @@ connection.connect(function(err) {
     console.log('Connected to MySQL database');
 });
 
-// Function to fetch products from the database
+app.use(express.json());
+
+// Route handler for fetching products
 app.get('/getProducts', (req, res) => {
     const query = 'SELECT * FROM Products';
 
@@ -34,12 +37,7 @@ app.get('/getProducts', (req, res) => {
             res.status(500).json({ error: 'Error fetching products' });
         } else {
             // Modify each object in the results array
-            const modifiedResults = results.map(product => {
-                return {
-                    ...product,
-                    id: product.SKU_ID,
-                };
-            });
+            const modifiedResults = modifyResults(results, 'SKU_ID');
 
             res.json(modifiedResults);
         }
@@ -56,12 +54,7 @@ app.get('/getUsers', (req, res) => {
             res.status(500).json({ error: 'Error fetching users' });
         } else {
             // Modify each object in the results array
-            const modifiedResults = results.map(user => {
-                return {
-                    ...user,
-                    id: user.User_ID,
-                };
-            });
+            const modifiedResults = modifyResults(results, 'User_ID');
 
             res.json(modifiedResults);
         }
@@ -78,12 +71,7 @@ app.get('/getIngredients', (req, res) => {
             res.status(500).json({ error: 'Error fetching ingredients' });
         } else {
             // Modify each object in the results array
-            const modifiedResults = results.map(ingredient => {
-                return {
-                    ...ingredient,
-                    id: ingredient.Ingredient_ID,
-                };
-            });
+            const modifiedResults = modifyResults(results, 'Ingredient_ID');
 
             res.json(modifiedResults);
         }
@@ -252,38 +240,6 @@ app.get('/getVendors', (req, res) => {
     });
 });
 
-
-
-
-
-
-
-
-app.use(express.json());
-// Function to fetch login users from the database
-app.get('/getloginUsers', (req, res) => {
-    const id = req.params.id;
-    const query = 'SELECT Username, Password FROM Users';
-
-    connection.query(query, (error, results) => {
-        if (error) {
-            console.error('Error fetching users:', error);
-            res.status(500).json({ error: 'Error fetching users' });
-        } else {
-            res.json(results);
-        }
-    });
-});
-
-
-
-
-
-
-
-
-
-
 // Function to fetch Vendors from the database
 app.get('/getImageGallery', (req, res) => {
     const query = 'SELECT * FROM ImageGallery';
@@ -333,3 +289,4 @@ app.listen(PORT, () => {
 
 // Export the connection (optional if you need to use it elsewhere)
 module.exports.connection = connection;
+module.exports = app;

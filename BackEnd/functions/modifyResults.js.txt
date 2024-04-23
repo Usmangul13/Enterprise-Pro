@@ -1,0 +1,11 @@
+// Function to modify each object in the results array
+function modifyResults(results, idKey) {
+    return results.map(obj => {
+        return {
+            ...obj,
+            id: obj[idKey],
+        };
+    });
+}
+
+module.exports = modifyResults;
