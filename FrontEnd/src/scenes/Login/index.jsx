@@ -1,24 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function Login({ onLogin }) {
+    const [submitting, setSubmitting] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    // Function to handle form submission
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
+        setSubmitting(true);
 
-        // Perform basic validation
         if (!username || !password) {
             setError('Please enter both username and password.');
             return;
         }
 
-        // Reset error message
         setError('');
-
-        // Call the onLogin method passed from the parent component
         onLogin(username, password);
     };
 
