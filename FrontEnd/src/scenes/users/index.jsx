@@ -1,7 +1,8 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockDataUsers } from "../../data/mockData";
+import React, { useState, useEffect } from 'react';
+//import { mockDataUsers } from "../../data/mockData";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
@@ -11,38 +12,37 @@ const Users = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
+    const [users, setUsers] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [message, setMessage] = useState('');
+
+    const fetchUsers = async () => {
+        try {
+          const response = await fetch('http://localhost:3007/getUsers');
+          if (!response.ok) {
+            throw new Error('Error fetching users');
+          }
+
+          const data = await response.json();
+          setUsers(data);
+          setIsLoading(false); 
+        } catch (error) {
+          console.error(error);
+          setError(error.message);
+          setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
     const columns = [
-        {field: "id", headerName: "ID" },
-        {field: "name", headerName: "Name", flex: 1, cellClassName: "name-column--cell" },
-        {field: "age", headerName: "Age", type: "number", headerAlign: "left", align: "left" },
-        {field: "phone", headerName: "Phone Number", flex: 1 },
-        {field: "email", headerName: "Email", flex: 1 },
-        {field: "access", headerName: "Access Level", flex: 1, renderCell: ({ row: {access}}) => {
-            return (
-                <Box
-                  width="60%"
-                  m="0 auto"
-                  p="5px"
-                  display="flex"
-                  justifyContent="center"
-                  backgroundColor={
-                    access === "manager"
-                     ? colors.greenAccent[600]
-                     : colors.greenAccent[700]
-                  }
-                  borderRadius="4px"
-                >
-                    {access === "manager" && <AdminPanelSettingsOutlinedIcon />}
-                    {access === "staff" && <SecurityOutlinedIcon />}
-                    {access === "vendor" && <LockOpenOutlinedIcon />}
-                    <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-                        {access}
-                    </Typography>
-
-                </Box>
-            )
-        } },
-
+        {field: "id", headerName: "User ID" },
+        {field: "Username", headerName: "Username", flex: 1, cellClassName: "name-column--cell" },
+        {field: "Password", headerName: "Password", flex: 1 },
+        {field: "UserType", headerName: "User type", flex: 1 },
     ];
 
     return (
@@ -77,7 +77,7 @@ const Users = () => {
                 },
               }}
             >
-                <DataGrid rows={mockDataUsers} columns={columns} checkboxSelection />
+                <DataGrid rows={users} columns={columns} checkboxSelection />
             </Box>
         </Box>
     );

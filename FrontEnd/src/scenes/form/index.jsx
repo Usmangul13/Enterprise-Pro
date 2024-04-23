@@ -1,33 +1,47 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
+import axios from 'axios';
+import React, { useState } from 'react'; // Import useState from React
 
 const initialValues = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    contact: "",
-    age: "",
+    username: "",
+    password: "",
+    usertype: "",
 };
 
-const phoneRegExp = /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
-
 const userSchema = yup.object().shape({
-    firstName: yup.string().required("required"),
-    lastName: yup.string().required("required"),
-    email: yup.string().email("invalid email").required("required"),
-    contact: yup.string().matches(phoneRegExp, "Phone number is not valid").required("required"),
-    age: yup.string().required("required"),
+    username: yup.string().required("required"),
+    password: yup.string().required("required"),
+    usertype: yup.string().required("required"),
 })
 
 const Form = () => {
     const isNonMobile = useMediaQuery("(min-width:600px)");
 
-    const handleFormSubmit = (values) => {
-        console.log(values);
-    }
+    const [submitting, setSubmitting] = useState(false);
+    const [successMessage, setSuccessMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const handleFormSubmit = async (values) => {
+        setSubmitting(true);
+        try {
+            // Send a POST request to the backend endpoint
+            const response = await axios.post('http://localhost:3007/createusers', values);
+            console.log(response.data);
+            setSuccessMessage("USERS CREATED SUCCESSFULLY");
+            setErrorMessage("");
+        } catch (error) {
+            console.error('Error creating user:', error);
+            setSuccessMessage("");
+            setErrorMessage("FAILED TO CREATE USERS");
+        } finally {
+            setSubmitting(false);
+        }
+    };
+    
 
     return <Box m="20px">
         <Header title="CREATE USER" subtitle="Create a New User Profile" />
@@ -51,67 +65,54 @@ const Form = () => {
                             fullWidth
                             variant="filled"
                             type="text"
-                            label="First Name"
+                            label="Username"
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            value={values.firstName}
-                            name="firstName"
-                            error={!!touched.firstName && !!errors.firstName}
-                            helperText={touched.firstName && errors.firstName}
+                            value={values.username}
+                            name="username"
+                            error={!!touched.username && !!errors.username}
+                            helperText={touched.username && errors.username}
                             sx={{ gridColumn: "span 2"}}
                         />
                         <TextField
                             fullWidth
                             variant="filled"
                             type="text"
-                            label="Last Name"
+                            label="Password"
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            value={values.lastName}
-                            name="lastName"
-                            error={!!touched.lastName && !!errors.lastName}
-                            helperText={touched.lastName && errors.lastName}
+                            value={values.password}
+                            name="password"
+                            error={!!touched.password && !!errors.password}
+                            helperText={touched.password && errors.password}
                             sx={{ gridColumn: "span 2"}}
                         />
                         <TextField
                             fullWidth
                             variant="filled"
                             type="text"
-                            label="Email"
+                            label="User Type"
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            value={values.email}
-                            name="email"
-                            error={!!touched.email && !!errors.email}
-                            helperText={touched.email && errors.email}
+                            value={values.usertype}
+                            name="usertype"
+                            error={!!touched.usertype && !!errors.usertype}
+                            helperText={touched.usertype && errors.usertype}
                             sx={{ gridColumn: "span 4"}}
                         />
-                        <TextField
-                            fullWidth
-                            variant="filled"
-                            type="text"
-                            label="Contact Number"
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            value={values.contact}
-                            name="contact"
-                            error={!!touched.contact && !!errors.contact}
-                            helperText={touched.contact && errors.contact}
-                            sx={{ gridColumn: "span 4"}}
-                        />
-                        <TextField
-                            fullWidth
-                            variant="filled"
-                            type="text"
-                            label="Age"
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            value={values.age}
-                            name="age"
-                            error={!!touched.age && !!errors.age}
-                            helperText={touched.age && errors.age}
-                            sx={{ gridColumn: "span 4"}}
-                        />
+                        <Box mt={2} p={1} borderRadius={4}>
+                                <Typography variant="h6" color="success">
+                                    {successMessage}
+                                </Typography>
+                            </Box>
+
+                            {errorMessage && (
+                                <Box mt={2} p={1} borderRadius={4}>
+                                    <Typography variant="body1" color="error">
+                                        {errorMessage}
+                                    </Typography>
+                                </Box>
+                            )}
                     </Box>
                     <Box display="flex" justifyContent="end" mt="20px">
                         <Button type="submit" color="secondary" variant="contained">
