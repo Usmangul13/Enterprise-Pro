@@ -24,6 +24,7 @@ import Login from "./scenes/Login"; // Import the Login component
 function App() {
   const [theme, colorMode] = useMode();
   const [notifications, setNotifications] = useState([]);
+  const [userLogins, setUserLogins] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login state
 
   useEffect(() => {
@@ -38,12 +39,46 @@ function App() {
     }
   }, []);
 
+  const fetchUserDetails = async () => {
+    try {
+      const response = await fetch('http://localhost:3007/getloginUsers');
+      if (!response.ok) {
+        throw new Error('Error fetching products');
+      }
+
+      const data = await response.json();
+      setUserLogins(data);
+    } catch (error) {
+      console.error(error);
+    }
+};
+
+useEffect(() => {
+    fetchUserDetails();
+}, []);
+
+const checkDetails = (username, password) => {
+    for (let user of userLogins) {
+        if(user.Username == username && user.Password == password){
+            return true;
+        }
+    }
+    return false;
+}
+
   // Function to handle login
   const handleLogin = (username, password) => {
     // Implement login logic here (e.g., API call, validation)
     // If login is successful, set isLoggedIn to true and store in local storage
-    setIsLoggedIn(true);
-    localStorage.setItem("isLoggedIn", true);
+    let found = checkDetails(username, password);
+    if(found){
+      setIsLoggedIn(true);
+      localStorage.setItem("isLoggedIn", true);
+    } else{
+      setIsLoggedIn(false);
+      localStorage.setItem("isLoggedIn", false);
+    }
+    
   };
 
   // Function to handle logout
